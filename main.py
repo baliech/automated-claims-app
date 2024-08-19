@@ -7,10 +7,6 @@ import re
 import tempfile
 from googletrans import Translator
 # Initialize API and KudraCloudClient
-=======
-from streamlit_lottie import st_lottie
-
-
 genai.configure(api_key="AIzaSyAKPCsEM28_jJKaiNGNKWGLSD7_pYkC_hs")
 model = genai.GenerativeModel(model_name="gemini-pro")
 kudraCloud = KudraCloudClient(token="1b412d10-0fea-4d99-bfb3-f7e5df249875")
@@ -18,6 +14,8 @@ kudraCloud = KudraCloudClient(token="1b412d10-0fea-4d99-bfb3-f7e5df249875")
 # Define the project run ID here
 PROJECT_RUN_ID = "David/Invoice%20Extraction-17228469437846134/1b412d10-0fea-4d99-bfb3-f7e5df249875/MTI5MA=="
 
+import os
+import tempfile
 
 def process_uploaded_files(uploaded_file):
     with tempfile.TemporaryDirectory() as temp_dir:
@@ -79,7 +77,6 @@ def generate_response_and_status(question, text):
     
     return answer, "Not Found", None
 
-
 def confirmation_logic(answer, question):
     answer_lower = answer.lower()
     question_lower = question.lower()
@@ -107,101 +104,32 @@ def confirmation_logic(answer, question):
 # Streamlit app interface
 st.set_page_config('claims validator', '🌐')
 
-<<<<<<< HEAD
 # Sidebar for file upload and page navigation
 with st.sidebar:
     st.sidebar.title('Upload Document☁️')
     selected = option_menu(
         menu_title="Menu",
-        options=["Upload File", "Set Keywords"],
-        icons=["folder-plus", "pencil-square"],
+        options=["Upload Files", "Add Keywords"],
+        icons=["pencil-square", "folder-plus"],
         menu_icon="menu-down",
         default_index=0
-=======
-
-st.title("Automated Claims Verification🚀")
-
-# Sidebar for file upload
-st.sidebar.title('Upload Document☁️')
-uploaded_file = st.sidebar.file_uploader("Choose a file to upload", accept_multiple_files=False)
-
-# Reset state when a new file is uploaded
-if uploaded_file and (not st.session_state.get("uploaded_file") or st.session_state.uploaded_file.name != uploaded_file.name):
-    st.session_state.texts = ""
-    st.session_state.selected_question = ""
-    st.session_state.messages = [
-        {
-            "role": "assistant",
-            "content": "Please extract the text from your uploaded document, then select a question to get a response."
-        }
-    ]
-    st.session_state.uploaded_file = uploaded_file
-
-# Display uploaded file details in the sidebar
-if uploaded_file:
-    st.sidebar.write(f"**File name:** {uploaded_file.name}")
-    if uploaded_file.type.startswith('image'):
-        st.sidebar.image(uploaded_file, use_column_width=True)
-
-# Initialize session state for messages, texts, and selected question
-if "messages" not in st.session_state:
-    st.session_state.messages = [
-        {
-            "role": "assistant",
-            "content": "Please extract the text from your uploaded document, then select a question to get a response."
-        }
-    ]
-
-if "texts" not in st.session_state:
-    st.session_state.texts = ""
-
-if "selected_question" not in st.session_state:
-    st.session_state.selected_question = ""
-
-# Text extraction logic
-if st.button('Extract text🏥', key='extract_button'):
-    if uploaded_file:
-        with st.spinner('Analyzing document. This may take a few minutes...'):
-            results = process_uploaded_files(uploaded_file)
-            st.session_state.texts = results[0]["text"] if results else ""
-
-# Display predefined questions above the extracted text
-if st.session_state.texts:
-    st.header("Select a Question to query extracted text")
-    st.session_state.selected_question = st.selectbox(
-        "Select a question:", 
-        options=[
-            "Find name in the provided text, The name shouldn't be the name of a doctor",
-            "What is the invoice number?",
-            "What is the invoice date?",
-            "What is the date ?",
-            "What is the invoice reference number?note that reference number is not the same as invoice number",
-            "What is Co Reg No?",
-            "What is GST Reg No?",
-            "What is the total?",
-            "From the text provided, can you find traditional Chinese medicine or TCM?"
-        ],
-        key="question_select"
->>>>>>> 2a7361e02a38c85d92e81b0dc1b00a1d0259b99
     )
 
 # Keyword dictionary to store mapping of keywords to questions
 keyword_to_question = {
-    "person name": "What is the person name on the document not the name of the doctor?",
+    "Name": "What is the name on the document?",
     "Total": "What is the total amount?",
     "Invoice Number": "What is the invoice number or receipt Num?",
     "Date": "What is the invoice date?",
-    "Reference Number": "What is the reference number?",
+    "Reference Number": "What is the invoice reference number?",
     "TCM": "Is traditional Chinese medicine or TCM mentioned?"
 }
 
 if "keywords" not in st.session_state:
     st.session_state.keywords = []
 
-if selected == "Set Keywords":
-    st.title("Set Keywords🔑")
-    st.subheader("select or unselect keywords")
-    st.info("document will be queried based on keyword selected")
+if selected == "Add Keywords":
+    st.title("Add Keywords🚀")
 
     selected_keywords = st.multiselect(
         "Select Keywords",
@@ -210,11 +138,10 @@ if selected == "Set Keywords":
     )
     st.session_state.keywords = selected_keywords
 
-if selected == "Upload File":
+if selected == "Upload Files":
     st.title("Automated Claims Verification🚀")
     uploaded_file = st.sidebar.file_uploader("Choose a file to upload", accept_multiple_files=False)
 
-<<<<<<< HEAD
     # Reset state when a new file is uploaded
     if uploaded_file and (not st.session_state.get("uploaded_file") or st.session_state.uploaded_file.name != uploaded_file.name):
         st.session_state.texts = ""
@@ -238,7 +165,7 @@ if selected == "Upload File":
     if st.session_state.keywords:
         questions = [keyword_to_question[keyword] for keyword in st.session_state.keywords]
     else:
-        st.info("Please set keywords in the 'Set Keywords' section else document will be queried based on default rules")
+        st.warning("Please set keywords in the 'Add Keywords' section")
         questions = list(keyword_to_question.values())
 
     # Text extraction and automatic question answering
@@ -275,17 +202,13 @@ if selected == "Upload File":
                 if category is not None:
                     benefit_category = category
                     st.info(benefit_category)
+
     # Display the responses in a table format
     if st.session_state.responses:
         st.header("Responses Table")
         st.table(st.session_state.responses)
-         
-        
-        
 
     # Display the extracted text below the responses
     if st.session_state.texts:
         st.header("Extracted Text")
-        st.write(st.session_state.texts)
-=======
-
+        st.write(st.session_state.texts)       
