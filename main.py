@@ -120,7 +120,7 @@ keyword_to_question = {
     "Name": "What is the name on the document?",
     "Total": "What is the total amount?",
     "Invoice Number": "What is the invoice number or receipt Num?",
-    "Date": "What is the invoice date?",
+    "Date": "What is the  date on the invoice?",
     "Reference Number": "What is the invoice reference number?",
     "TCM": "Is traditional Chinese medicine or TCM mentioned?"
 }
@@ -129,7 +129,7 @@ if "keywords" not in st.session_state:
     st.session_state.keywords = []
 
 if selected == "Set Keywords":
-    st.title("Add Keywords🚀")
+    st.title("Set Keywords🚀")
 
     selected_keywords = st.multiselect(
         "Select Keywords",
