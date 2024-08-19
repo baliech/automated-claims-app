@@ -109,8 +109,8 @@ with st.sidebar:
     st.sidebar.title('Upload Document☁️')
     selected = option_menu(
         menu_title="Menu",
-        options=["Upload Files", "Add Keywords"],
-        icons=["pencil-square", "folder-plus"],
+        options=["Upload File", "Set Keywords"],
+        icons=["folder-plus", "pencil-square"],
         menu_icon="menu-down",
         default_index=0
     )
@@ -128,7 +128,7 @@ keyword_to_question = {
 if "keywords" not in st.session_state:
     st.session_state.keywords = []
 
-if selected == "Add Keywords":
+if selected == "Set Keywords":
     st.title("Add Keywords🚀")
 
     selected_keywords = st.multiselect(
@@ -138,7 +138,7 @@ if selected == "Add Keywords":
     )
     st.session_state.keywords = selected_keywords
 
-if selected == "Upload Files":
+if selected == "Upload File":
     st.title("Automated Claims Verification🚀")
     uploaded_file = st.sidebar.file_uploader("Choose a file to upload", accept_multiple_files=False)
 
@@ -165,7 +165,7 @@ if selected == "Upload Files":
     if st.session_state.keywords:
         questions = [keyword_to_question[keyword] for keyword in st.session_state.keywords]
     else:
-        st.warning("Please set keywords in the 'Add Keywords' section")
+        st.info("you can set keywords in the 'Add Keywords' section or use default rules")
         questions = list(keyword_to_question.values())
 
     # Text extraction and automatic question answering
