@@ -2,7 +2,6 @@ import streamlit as st
 from kudra_cloud_client import KudraCloudClient
 import os
 import google.generativeai as genai
-<<<<<<< HEAD
 from streamlit_option_menu import option_menu
 import re
 import tempfile
@@ -12,8 +11,6 @@ from googletrans import Translator
 from streamlit_lottie import st_lottie
 
 
-
->>>>>>> 2a7361e02a38c85d92e81b0dc1b00a1d0259b99f
 genai.configure(api_key="AIzaSyAKPCsEM28_jJKaiNGNKWGLSD7_pYkC_hs")
 model = genai.GenerativeModel(model_name="gemini-pro")
 kudraCloud = KudraCloudClient(token="1b412d10-0fea-4d99-bfb3-f7e5df249875")
@@ -21,18 +18,6 @@ kudraCloud = KudraCloudClient(token="1b412d10-0fea-4d99-bfb3-f7e5df249875")
 # Define the project run ID here
 PROJECT_RUN_ID = "David/Invoice%20Extraction-17228469437846134/1b412d10-0fea-4d99-bfb3-f7e5df249875/MTI5MA=="
 
-<<<<<<< HEAD
-import os
-import tempfile
-=======
-def load_lottieurl(url:str):
-    r= requests.get(url)
-    if r.status_code !=200:
-        return None
-    return r.json()
-lottie_ai = load_lottieurl("https://lottie.host/54225138-3908-4294-a70b-1b5c9cbb9f7e/mYvbWoiYHD.json")
-lottie_ais = load_lottieurl("https://lottie.host/44d9b3f5-6e06-4790-b891-5e9bde7e5a24/7x1fjA2NWz.json")
->>>>>>> 2a7361e02a38c85d92e81b0dc1b00a1d0259b99f
 
 def process_uploaded_files(uploaded_file):
     with tempfile.TemporaryDirectory() as temp_dir:
@@ -197,7 +182,7 @@ if st.session_state.texts:
             "From the text provided, can you find traditional Chinese medicine or TCM?"
         ],
         key="question_select"
->>>>>>> 2a7361e02a38c85d92e81b0dc1b00a1d0259b99f
+>>>>>>> 2a7361e02a38c85d92e81b0dc1b00a1d0259b99
     )
 
 # Keyword dictionary to store mapping of keywords to questions
@@ -303,10 +288,4 @@ if selected == "Upload File":
         st.header("Extracted Text")
         st.write(st.session_state.texts)
 =======
-# Display chat messages from session state in an orderly fashion
-if st.session_state.messages:
-    st.header("Query History")
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
->>>>>>> 2a7361e02a38c85d92e81b0dc1b00a1d0259b99f
+
